@@ -23,7 +23,7 @@ class CardController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Cards/Create');
     }
 
     /**
@@ -31,7 +31,15 @@ class CardController extends Controller
      */
     public function store(Request $request)
     {
-        //
+       $validated = $request->validate([
+            'card_number' => 'required|string',
+            'pin' => 'required|string',
+            'activation_date' => 'required|date',
+            'expiration_date' => 'required|date',
+            'balance' => 'required|numeric',
+        ]);
+        Card::create($validated);
+        return redirect()->route('cards.index');
     }
 
     /**
