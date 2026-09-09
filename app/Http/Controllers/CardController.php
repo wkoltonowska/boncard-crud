@@ -32,8 +32,8 @@ class CardController extends Controller
     public function store(Request $request)
     {
        $validated = $request->validate([
-            'card_number' => 'required|string',
-            'pin' => 'required|string',
+            'card_number' => 'required|digits:20',
+            'pin' => 'required|digits:4',
             'activation_date' => 'required|date',
             'expiration_date' => 'required|date',
             'balance' => 'required|numeric',
@@ -53,24 +53,33 @@ class CardController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Card $card)
     {
-        //
+         return Inertia::render('Cards/Edit', ["card" => $card]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Card $card)
     {
-        //
+         $validated = $request->validate([
+            'card_number' => 'required|digits:20',
+            'pin' => 'required|digits:4',
+            'activation_date' => 'required|date',
+            'expiration_date' => 'required|date',
+            'balance' => 'required|numeric',
+        ]);
+        $card->update($validated);
+        return redirect()->route('cards.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Card $card)
     {
-        //
+        $card->delete();
+        return redirect()->route('cards.index');
     }
 }

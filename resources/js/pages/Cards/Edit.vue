@@ -1,16 +1,18 @@
 <script setup lang="ts">
 import { useForm } from "@inertiajs/vue3";
 
+const props = defineProps(["card"]);
+
 const form = useForm({
-    card_number: "",
-    pin: "",
-    activation_date: "",
-    expiration_date: "",
-    balance: "",
+    card_number: props.card.card_number,
+    pin: props.card.pin,
+    activation_date: props.card.activation_date,
+    expiration_date: props.card.expiration_date,
+    balance: props.card.balance,
 });
 
 function submit() {
-    form.post("/cards");
+    form.put(`/cards/${props.card.id}`);
 }
 </script>
 
